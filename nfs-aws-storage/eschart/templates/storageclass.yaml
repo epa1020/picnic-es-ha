@@ -1,14 +1,23 @@
 {{- if .Values.storageToUse.nfs }}
+allowVolumeExpansion: true
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
+  annotations:
+    meta.helm.sh/release-name: nfs-subdir-external-provisioner
+    meta.helm.sh/release-namespace: default
+  labels:
+    app: nfs-subdir-external-provisioner
+    app.kubernetes.io/managed-by: Helm
+    chart: nfs-subdir-external-provisioner-4.0.14
+    heritage: Helm
+    release: nfs-subdir-external-provisioner
   name: standard-storage
-provisioner: k8s-sigs.io/nfs-subdir-external-provisioner # or choose another name, must match deployment's env PROVISIONER_NAME'
-reclaimPolicy: Retain
-volumeBindingMode: WaitForFirstConsumer
 parameters:
-  pathPattern: "${.PVC.namespace}/${.PVC.annotations.nfs.io/storage-path}" # waits for nfs.io/storage-path annotation, if not specified will accept as empty string.
-  onDelete: delete
+  archiveOnDelete: "true"
+provisioner: cluster.local/nfs-subdir-external-provisioner
+reclaimPolicy: Delete
+volumeBindingMode: Immediate
 {{- end }}
 ---
 {{- if .Values.storageToUse.aws }}

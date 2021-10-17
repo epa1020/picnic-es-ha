@@ -74,6 +74,9 @@ kubectl apply -f https://download.elastic.co/downloads/eck/1.8.0/operator.yaml
 ## Install NFS provisioner (just for on-premise envs)
 
 ```sh
+# Add repo
+helm repo add nfs-subdir-external-provisioner https://kubernetes-sigs.github.io/nfs-subdir-external-provisioner/
+# Install Chart
 helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provisioner/nfs-subdir-external-provisioner \
     --set nfs.server={server name or IP} \
     --set nfs.path={path}
@@ -83,22 +86,12 @@ helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provi
 The cluster deployment yaml files along with the other kubernetes objects and configurations
 are being deployed via a custom Helm chart, navigate to the installation folder you are going to use.
 
-- azure-storage --> deploy the ES cluster in azure AKS using storage account as main storage
-- aws-storage --> deploy the ES cluster in Amazon EKS using aws as main storage
-- nfs-aws-storage --> deploy the ES cluster in Amazon EKS using NFS as main storage
-
-the only difference between nfs-aws-storage and s3-aws storage is the storage class that is implemented
-
 To verify the objects you are going to install run the following script
 
 ```sh
-## Azure
-helm template --debug elasticha ./eschart \
---set storageAcc.accKey="{azure account key}" --set storageAcc.accName="{azure account name}"
-
 ##AWS
 helm template --debug elasticha ./eschart \
---set s3.keyid="{aws s3 key id}" --set s3.secretkey="{aws s3 secret key}" \
+--set s3.keyid="{aws s3 key id in base64}" --set s3.secretkey="{aws s3 secret key in base64}" \
 --set storageToUse.aws=true
 
 ```
@@ -107,32 +100,13 @@ To install the objects in kubernets run the following command
 
 ```sh
 helm upgrade --install --debug elasticha ./eschart \
---set keyid.keyid="{aws s3 key id}" --set keyid.secretkey="{aws s3 secret key}"
+--set keyid.keyid="{aws s3 key id in base64}" --set keyid.secretkey="{aws s3 secret key in base64}" \
+--set storageToUse.aws=true
 
-## to install using on-premise NFS storage
-## pass a different volume claim as helm value
-## Example:
-## [
-##   {
-##     "metadata": {
-##       "name": "elasticsearch-data"
-##     },
-##     "spec": {
-##       "accessModes": [
-##         "ReadWriteOnce"
-##       ],
-##       "resources": {
-##         "requests": {
-##           "storage": "10Gi"
-##         }
-##       },
-##       "storageClassName": "nfs-client"
-##     }
-##   }
-## ]
+
 ```
 
-To show the helm chart values run the following command, 
+To show the helm chart values run the following command:
 
 ```hs
 helm show values ./eschart
@@ -140,9 +114,9 @@ helm show values ./eschart
 
 
 ### Configure backups
-Run the foollowing script located in backups folder
+Run the following script located in backups folder
 
 ```sh
-config-backup.sh "{azure blob container}" "{storage account}" "{storage account key}"
+config-backup.sh
 ```
-this send a request to the azure plugin installed in the ElasticSearch nodes to start sending the snapshots to the azure storage account to the desire container(bucket)
+this send a request to the aws plugin installed in the ElasticSearch nodes to start sending the snapshots to the azure storage account to the desire container(bucket)
