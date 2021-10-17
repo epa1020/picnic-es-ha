@@ -5,9 +5,6 @@ metadata:
   labels:
     app: elasticsearchnode
 spec:
-  metadata:
-    labels:
-      app: elasticsearchnode
   secureSettings:
   - secretName: "snapshot-secret"
   version: 7.5.2
