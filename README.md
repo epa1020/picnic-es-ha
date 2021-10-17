@@ -41,13 +41,14 @@ This enables you to use resilient storage in the cloud or on-premise environemts
 
 
 ## Backups
-In order to backup the data of the ElasticSearch cluster(ECK) there are multiple native plugins to take incremental snapshots, 
-these snapshots are stored outside the cluster, so if the kubernetes cluster fails ElasticSearch can be recovered in other Kubernetes cluster.
-If needed, take snapshot of the storage that contains the ECK snapshot in order to have specific restore points.
+There are multiple native plugins to take incremental snapshots of the ElasticSearch cluster(ECK) data, 
+these snapshots should be stored outside the cluster, because if the kubernetes cluster fails, ElasticSearch can be recovered in other Kubernetes cluster.
+Its also recomended take snapshots of the storage that contains the ECK snapshots in order to have specific restore points.
 
 The selected approach to manage the backups is via AWS snapshot plugin, because the cloud brings a lot of capabilities such as soft delte, data snapshots, access from any place in the world, high throughput. All these with minimal effort.
 
-But the ECK cluster is not going to be tied to a specific cloud provider,following other available plugins:
+There are multiple ECK cluster plugins to take the snapshots, this is good because we can swith from cloud provider without rebuild the entire backup solution.
+Following other available plugins:
 - repository-s3 for S3 repository support
 - repository-hdfs for HDFS repository support in Hadoop environments
 - repository-azure for Azure storage repositories
