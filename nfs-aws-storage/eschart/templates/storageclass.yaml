@@ -1,4 +1,4 @@
-{{- if not .Values.storageToUse.nfs }}
+{{- if .Values.storageToUse.nfs }}
 apiVersion: storage.k8s.io/v1
 kind: StorageClass
 metadata:
@@ -11,7 +11,7 @@ parameters:
   onDelete: delete
 {{- end }}
 ---
-{{- if not .Values.storageToUse.aws }}
+{{- if .Values.storageToUse.aws }}
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
 metadata:
