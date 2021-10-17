@@ -17,7 +17,7 @@ parameters:
   archiveOnDelete: "true"
 provisioner: cluster.local/nfs-subdir-external-provisioner
 reclaimPolicy: Delete
-volumeBindingMode: Immediate
+volumeBindingMode: WaitForFirstConsumer
 {{- end }}
 ---
 {{- if .Values.storageToUse.aws }}
