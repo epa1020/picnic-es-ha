@@ -6,6 +6,10 @@ replicaCount: 3
 mainAppLabel: "elasticsearchnode"
 storageSize: "1Gi"
 
+storageToUse:
+    nfs: false
+    aws: false
+    
 s3:
   keyid: ""
   secretkey: ""

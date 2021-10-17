@@ -81,19 +81,33 @@ helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provi
 
 ### Deploy ElasticSearch cluster
 The cluster deployment yaml files along with the other kubernetes objects and configurations
-are being deployed via a custom Helm chart.
+are being deployed via a custom Helm chart, navigate to the installation folder you are going to use.
+
+- azure-storage --> deploy the ES cluster in azure AKS using storage account as main storage
+- aws-storage --> deploy the ES cluster in Amazon EKS using aws as main storage
+- nfs-aws-storage --> deploy the ES cluster in Amazon EKS using NFS as main storage
+
+the only difference between nfs-aws-storage and s3-aws storage is the storage class that is implemented
 
 To verify the objects you are going to install run the following script
 
 ```sh
+## Azure
 helm template --debug elasticha ./eschart \
 --set storageAcc.accKey="{azure account key}" --set storageAcc.accName="{azure account name}"
+
+##AWS
+helm template --debug elasticha ./eschart \
+--set s3.keyid="{aws s3 key id}" --set s3.secretkey="{aws s3 secret key}" \
+--set storageToUse.aws=true
+
 ```
 
 To install the objects in kubernets run the following command
 
 ```sh
-helm upgrade --install --debug elasticha ./eschart --set storageAcc.accKey="{azure account key}" --set storageAcc.accName="{azure account name}"
+helm upgrade --install --debug elasticha ./eschart \
+--set keyid.keyid="{aws s3 key id}" --set keyid.secretkey="{aws s3 secret key}"
 
 ## to install using on-premise NFS storage
 ## pass a different volume claim as helm value
