@@ -47,7 +47,7 @@ Its also recomended take snapshots of the storage that contains the ECK snapshot
 
 The selected approach to manage the backups is via AWS snapshot plugin, because the cloud brings a lot of capabilities such as soft delte, data snapshots, access from any place in the world, high throughput. All these with minimal effort.
 
-There are multiple ECK cluster plugins to take the snapshots, this is good because we can swith from cloud provider without rebuild the entire backup solution.
+There are multiple ECK cluster plugins to take the snapshots, this is good because we can switch from cloud provider without rebuild the entire backup solution.
 Following other available plugins:
 - repository-s3 for S3 repository support
 - repository-hdfs for HDFS repository support in Hadoop environments
@@ -94,7 +94,7 @@ helm upgrade --install nfs-subdir-external-provisioner nfs-subdir-external-provi
 
 ### Deploy ElasticSearch cluster
 The cluster deployment yaml files along with the other kubernetes objects and configurations
-are being deployed via a custom Helm chart, this cart is located in the "eschart" folder.
+are being deployed via a custom Helm chart, this chart is located in the "eschart" folder.
 
 To verify the objects you are going to install run the following script
 
@@ -135,7 +135,7 @@ Run the following script located in backups folder
 ```sh
 config-backup.sh "{bucket name}" "{region}" "{basepath}"
 ```
-this send a request to the aws plugin installed in the ElasticSearch nodes to start sending the snapshots to the desired AWS S3 bucke
+this send a request to the aws plugin installed in the ElasticSearch nodes to start sending the snapshots to the desired AWS S3 bucket.
 
 ### Take Snapshot
 Run the following script located in backups folder
@@ -157,7 +157,7 @@ From the infraestructure perspective there are 3 principal metrics to take a loo
 You are able to modify the ElasticSearch cluster specifications and the operator is going to be in charge of apply those changes to the cluster.
 Since the ElasticSearch cluster is being install via a custom helm chart you can update and rollback version easly, as a normal helm chart.
 
-You just need to be aware that the volume claims cannot be modified.
+You just need to be aware that the volume claims cannot be downsized.
 
 ### Mantainance Tasks
 - Manage snapshots(create, delete)
