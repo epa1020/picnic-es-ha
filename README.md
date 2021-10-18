@@ -28,6 +28,8 @@ to indicate to the scheduler to prefer run pods in nodes that do not have a pod 
 The ElasticSearch documentation indicates use nodeAffinity to allow pods to be schedule accross multiple node/hosts, but this approach,
 requires to be tied to a set of specific cloud provider node labels, the podAntiAffinity achieve the same results without being tied to any cloud provider.
 
+The amount of ElasticSearch nodes is managed via Helm values(3 as default), each node has been configured to have the three same roles(master, data, ingest)
+
 ### Storage
 Configurations, data and indexes are stored in volumes, so if the volume goes down , the entire ElasticSearch cluster is going to fail.
 In order to achieve HA a more resilient storage solution that the default volatile pod storage is needed. Thankfully in Kubernetes 
@@ -107,6 +109,9 @@ helm template --debug elasticha ./eschart \
 ## if you are running the ES cluster in the cloud you might use aws storage
 #--set storageToUse.aws=true
 
+## Change amount of ES nodes
+#--set replicaCount={number of nodes}
+
 ```
 
 To install the objects in kubernets run the following command
@@ -120,14 +125,16 @@ helm upgrade --install --debug elasticha ./eschart \
 ## if you are running the ES cluster in the cloud you might use aws storage
 #--set storageToUse.aws=true
 
+## Change amount of ES nodes
+#--set replicaCount={number of nodes}
+
 ```
 
-To show the helm chart values run the following command:
+To show the helm chart values run the following command.
 
 ```hs
 helm show values ./eschart
 ```
-
 
 ### Configure backups
 Run the following script located in backups folder
