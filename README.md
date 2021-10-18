@@ -72,7 +72,7 @@ Following the prerequisites:
 - Clone git repository.
 - Open the console and change the current directory to the repository directory.
 - Verify you are able to comunicate with your kubernetes cluster via kubectl.
-- NFS with a path exposed with property "no_root_squash" ready to be used (if you choose this storage rather than cloud storage, local envs).
+- NFS with a path exposed with property "no_root_squash" ready to be used (if you choose this storage rather than cloud storage, on-premise envs).
 
 ### Install ECK 1.8.0
 run the followig commands
